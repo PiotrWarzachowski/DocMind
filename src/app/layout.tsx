@@ -1,9 +1,12 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { cn } from '@/lib/utils'
-import './globals.css'
-import Navbar from '@/components/Navbar'
-import { ClerkProvider } from '@clerk/nextjs'
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import './globals.css';
+import Navbar from '@/components/Navbar';
+import { ClerkProvider } from '@clerk/nextjs';
+import Providers from '@/components/Providers';
+import "react-loading-skeleton/dist/skeleton.css";
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -19,13 +22,15 @@ export default function RootLayout({
 
   return (
 
+    
     <ClerkProvider>
-      
       <html lang="en" className='light'>
-        <body className={cn('min-h-screen font-sans antialiased ', inter.className)}>
-          <Navbar />
-          {children}
-        </body>
+        <Providers>
+          <body className={cn('min-h-screen font-sans antialiased ', inter.className)}>
+            <Navbar />
+            {children}
+          </body>
+        </Providers>
       </html>
     
     
