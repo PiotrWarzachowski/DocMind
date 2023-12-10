@@ -11,7 +11,7 @@ export const ourFileRouter = {
   pdfUploader: f({ pdf: { maxFileSize: "16MB" } })
     .middleware(async ({ req }) => {
       const user = await currentUser();
-
+      console.log(user);
       if (!user || !user.id) {
         throw new Error("Unauthorized");
       }
@@ -19,6 +19,13 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      const isFileExist = await db.file.findFirst({
+        where: {
+          key: file.key,
+        },
+      })
+    
+      if (isFileExist) return
       const createdFile = await db.file.create({
         data: {
           key: file.key,
@@ -45,7 +52,7 @@ export const ourFileRouter = {
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPENAI_API_KEY,
         });
-
+        
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
           pineconeIndex,
           namespace: createdFile.id,
@@ -60,6 +67,7 @@ export const ourFileRouter = {
           },
         });
       } catch (err) {
+        console.log(err);
         await db.file.update({
           data: {
             uploadStatus: "FAILED",
