@@ -6,15 +6,16 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model User {
-  id    String @id @unique
-  email String @unique
-  File File[]
+  id      String    @id @unique
+  email   String    @unique
+  File    File[]
+  Message Message[]
 }
 
 enum UploadStatus {
@@ -25,13 +26,28 @@ enum UploadStatus {
 }
 
 model File {
-  id        String   @id @default(cuid())
-  name String
+  id           String       @id @default(cuid())
+  name         String
   uploadStatus UploadStatus @default(PENDING)
-  url String
-  key String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User User? @relation(fields: [userId], references: [id])
+  url          String
+  key          String
+  messages     Message[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  User         User?        @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+model Message {
+  id   String @id @default(cuid())
+  text String @db.Text()
+
+  isUserMessage Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
   userId String?
+  File   File?   @relation(fields: [fileId], references: [id])
+  fileId String?
 }

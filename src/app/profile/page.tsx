@@ -1,13 +1,13 @@
-import { UserProfile } from "@clerk/nextjs"
+import { UserProfile } from "@clerk/nextjs";
 
 const profilePage = () => {
   return (
     <div className="container  ">
       <div className="flex justify-center pt-40 pb-10">
-        <UserProfile />  
+        <UserProfile />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default profilePage
+export default profilePage;
