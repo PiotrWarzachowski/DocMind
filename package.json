@@ -37,6 +37,7 @@
     "react-loading-skeleton": "^3.3.1",
     "react-pdf": "^7.5.1",
     "react-resize-detector": "^9.1.0",
+    "simplebar-react": "^3.2.4",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.0.4",
