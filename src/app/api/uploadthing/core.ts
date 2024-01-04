@@ -1,18 +1,19 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { currentUser } from "@clerk/nextjs";
 import { db } from "@/db";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { pinecone } from "@/lib/pinecone";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 const f = createUploadthing();
 
 export const ourFileRouter = {
   pdfUploader: f({ pdf: { maxFileSize: "16MB" } })
     .middleware(async ({ req }) => {
-      const user = await currentUser();
-      console.log(user);
-      if (!user || !user.id) {
+      const session = await getServerSession(authOptions);
+      const user = session?.user;
+      if (!session?.user || !session.user?.email) {
         throw new Error("Unauthorized");
       }
 
@@ -23,9 +24,9 @@ export const ourFileRouter = {
         where: {
           key: file.key,
         },
-      })
-    
-      if (isFileExist) return
+      });
+
+      if (isFileExist) return;
       const createdFile = await db.file.create({
         data: {
           key: file.key,
@@ -52,7 +53,7 @@ export const ourFileRouter = {
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPENAI_API_KEY,
         });
-        
+
         await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
           pineconeIndex,
           namespace: createdFile.id,

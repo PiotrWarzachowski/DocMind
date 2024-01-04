@@ -1,30 +1,30 @@
 import { TRPCError } from "@trpc/server";
 import { privateProcedure, publicProcedure, router } from "./trpc";
-import { auth, currentUser } from "@clerk/nextjs";
 import { db } from "@/db";
 import { z } from "zod";
 import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { hash } from "bcrypt";
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
-    const user = await currentUser();
-    const email = user?.emailAddresses[0].emailAddress;
-
-    if (!user || !email) throw new TRPCError({ code: "UNAUTHORIZED" });
+    const session = await getServerSession(authOptions);
+    const user = session?.user;
+    if (!user || !session) throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const dbUser = await db.user.findFirst({
       where: {
-        id: user.id,
-        email: email,
+        email: user.email,
       },
     });
     if (!dbUser) {
-      await db.user.create({
+      const newUser = await db.user.create({
         data: {
-          id: user.id,
-          email: email,
+          email: user.email,
+          accountType: "GOOGLE",
         },
       });
+      return { user: newUser };
     }
     return { success: true };
   }),

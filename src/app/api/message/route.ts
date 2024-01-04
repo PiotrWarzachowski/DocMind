@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-import { currentUser } from "@clerk/nextjs";
 import { SendMessageValidator } from "@/lib/validators/SendMessageValidator";
 import { db } from "@/db";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
@@ -7,15 +6,17 @@ import { pinecone } from "@/lib/pinecone";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { openai } from "@/lib/openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export const POST = async (req: NextRequest) => {
   // endpoint for asking a question for a PDF
 
   const body = await req.json();
-  const user = await currentUser();
-  const userId = user?.id;
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
 
-  if (!userId) {
+  if (!user || !user?.email) {
     return new Response("Unauthorized", { status: 401 });
   }
 
@@ -24,7 +25,7 @@ export const POST = async (req: NextRequest) => {
   const file = await db.file.findFirst({
     where: {
       id: fileId,
-      userId: userId,
+      userId: user.id,
     },
   });
 
@@ -36,7 +37,7 @@ export const POST = async (req: NextRequest) => {
     data: {
       text: message,
       isUserMessage: true,
-      userId: userId,
+      userId: user.id,
       fileId: fileId,
     },
   });
@@ -109,7 +110,7 @@ export const POST = async (req: NextRequest) => {
           text: completion,
           isUserMessage: false,
           fileId: fileId,
-          userId: userId,
+          userId: user.id,
         },
       });
     },

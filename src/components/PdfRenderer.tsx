@@ -91,7 +91,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
               {...register("page")}
               className={cn(
                 "w-12 h-8",
-                errors.page && "focus-visible:ring-red-500",
+                errors.page && "focus-visible:ring-red-500"
               )}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -108,7 +108,7 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
             disabled={numPages === undefined || currPage === numPages}
             onClick={() => {
               setCurrPage((prev) =>
-                prev + 1 > numPages! ? prev + 1 : prev + 1,
+                prev + 1 > numPages! ? prev + 1 : prev + 1
               );
               setValue("page", String(currPage + 1));
             }}
@@ -128,6 +128,12 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem onSelect={() => setScale(0.5)}>
+                50%
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setScale(0.75)}>
+                75%
+              </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => setScale(1)}>
                 100%
               </DropdownMenuItem>

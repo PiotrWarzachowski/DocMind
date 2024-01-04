@@ -1,8 +1,9 @@
-import { currentUser } from "@clerk/nextjs";
+import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 import { db } from "@/db";
 import PdfRenderer from "@/components/PdfRenderer";
 import ChatWrapper from "@/components/chat/ChatWrapper";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 interface PageProps {
   params: {
@@ -11,9 +12,11 @@ interface PageProps {
 }
 const Page = async ({ params }: PageProps) => {
   const { fileId } = params;
-
-  const user = await currentUser();
-
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  if (!session) {
+    redirect("/auth/signin");
+  }
   if (!user || !user.id) {
     redirect(`/auth-callback?origin=dashboard/${fileId}`);
   }

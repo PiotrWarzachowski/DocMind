@@ -1,11 +1,23 @@
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { ArrowRight } from "lucide-react";
-import { SignInButton, SignUpButton, auth, UserButton } from "@clerk/nextjs";
-
-const Navbar = () => {
-  const { userId } = auth();
+import { Book, MessageCircle, LogOut, Settings } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import ClientSignOutButton from "./ClientSignOutButton";
+const Navbar = async () => {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
 
   return (
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -17,7 +29,7 @@ const Navbar = () => {
           {/* TODO: add mobile navbar */}
 
           <div className="hidden items-center space-x-4 sm:flex">
-            {!userId && (
+            {!user && (
               <>
                 <Link
                   href="/upload"
@@ -28,7 +40,7 @@ const Navbar = () => {
                 >
                   Upload
                 </Link>
-                <SignInButton>
+                <Link href="http://localhost:3000/auth/signin">
                   <button
                     className={buttonVariants({
                       variant: "ghost",
@@ -37,9 +49,9 @@ const Navbar = () => {
                   >
                     Sign In
                   </button>
-                </SignInButton>
+                </Link>
 
-                <SignUpButton>
+                <Link href="http://localhost:3000/auth/signup">
                   <button
                     className={buttonVariants({
                       size: "sm",
@@ -47,23 +59,52 @@ const Navbar = () => {
                   >
                     Sign Up
                   </button>
-                </SignUpButton>
+                </Link>
               </>
             )}
-            {userId && (
-              <Link
-                href="/profile"
-                className={buttonVariants({
-                  variant: "ghost",
-                  size: "sm",
-                })}
-              >
-                Profile
-              </Link>
+            {user && (
+              <>
+                <Link
+                  href="/profile"
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "sm",
+                  })}
+                >
+                  Profile
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={user.image!} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Settings className="h-3 w-3 mr-2" />
+                      Settings
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem>
+                      <ClientSignOutButton />
+                    </DropdownMenuItem>
+                    <DropdownMenuLabel>Help</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Book className="h-3 w-3 mr-2" />
+                      Docs
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <MessageCircle className="h-3 w-3 mr-2" />
+                      Support
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             )}
-            <div className="ml-auto">
-              <UserButton afterSignOutUrl="/" />
-            </div>
           </div>
         </div>
       </MaxWidthWrapper>

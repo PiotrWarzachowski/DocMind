@@ -11,11 +11,19 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum AccountType {
+  GOOGLE
+  CLASSIC
+  GITHUB
+}
+
 model User {
-  id      String    @id @unique
-  email   String    @unique
-  File    File[]
-  Message Message[]
+  id          String      @id @default(uuid())
+  email       String      @unique
+  password    String?
+  accountType AccountType @default(CLASSIC)
+  File        File[]
+  Message     Message[]
 }
 
 enum UploadStatus {

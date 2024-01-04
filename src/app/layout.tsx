@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "@/components/Providers";
 import "react-loading-skeleton/dist/skeleton.css";
 import "simplebar-react/dist/simplebar.min.css";
@@ -21,20 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" className="light">
-        <Providers>
-          <body
-            className={cn(
-              "min-h-screen font-sans antialiased ",
-              inter.className,
-            )}
-          >
-            <Navbar />
-            {children}
-          </body>
-        </Providers>
-      </html>
-    </ClerkProvider>
+    <html lang="en" className="light">
+      <Providers>
+        <body
+          className={cn("min-h-screen font-sans antialiased ", inter.className)}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </Providers>
+    </html>
   );
 }
