@@ -9,9 +9,12 @@ import { hash } from "bcrypt";
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
     const session = await getServerSession(authOptions);
+
     const user = session?.user;
     if (!user || !session) throw new TRPCError({ code: "UNAUTHORIZED" });
 
+    if (!user.email) {
+    }
     const dbUser = await db.user.findFirst({
       where: {
         email: user.email,

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import ClientSignOutButton from "./ClientSignOutButton";
+import { Icons } from "./Icons";
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
   const user = session?.user;
@@ -23,8 +24,9 @@ const Navbar = async () => {
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
-          <Link href="/" className="flex z-40 font-semibold">
-            <span>DocMind.</span>
+          <Link href="/" className="flex z-40 font-semibold items-center">
+            <Icons.logo className="h-8 w-8 mr-2" />
+            <span className="text-xl font-semibold">DocMind</span>
           </Link>
           {/* TODO: add mobile navbar */}
 
@@ -40,7 +42,7 @@ const Navbar = async () => {
                 >
                   Upload
                 </Link>
-                <Link href="http://localhost:3000/auth/signin">
+                <Link href="/signin">
                   <button
                     className={buttonVariants({
                       variant: "ghost",
@@ -51,7 +53,7 @@ const Navbar = async () => {
                   </button>
                 </Link>
 
-                <Link href="http://localhost:3000/auth/signup">
+                <Link href="/signup">
                   <button
                     className={buttonVariants({
                       size: "sm",
@@ -65,13 +67,13 @@ const Navbar = async () => {
             {user && (
               <>
                 <Link
-                  href="/profile"
+                  href="/dashboard"
                   className={buttonVariants({
                     variant: "ghost",
                     size: "sm",
                   })}
                 >
-                  Profile
+                  Dashboard
                 </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger>

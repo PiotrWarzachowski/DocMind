@@ -15,9 +15,9 @@ const Page = async ({ params }: PageProps) => {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   if (!session) {
-    redirect("/auth/signin");
+    redirect("/signin");
   }
-  if (!user || !user.id) {
+  if (!user || !user.id || !user.email) {
     redirect(`/auth-callback?origin=dashboard/${fileId}`);
   }
 
