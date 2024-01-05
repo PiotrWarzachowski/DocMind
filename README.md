@@ -1,6 +1,6 @@
 # Welcome to Docmind 📑
 
-
+You can see and test the application here: https://doc-mind.vercel.app
 Docmind is a **Next.js** application that allows you to **talk with your PDF**. It uses custom **vector database with OpenAI API** to perform search, it **works preety amazing** 😎, you can **see showcase** in documentation. Documentation is done using gitbook, you can find it **[here](https://docmind.gitbook.io/docmind/)**. Feel free to **star this project** ⭐. Contributors are welcome.
 
 
