@@ -41,7 +41,7 @@ export function UserAuthForm({
     }
     setIsLoading(true);
     signIn(provider, {
-      callbackUrl: process.env.NEXT_APP_URL! + "/dashboard",
+      callbackUrl: "/dashboard",
     });
     setIsLoading(false);
   }
@@ -82,7 +82,7 @@ export function UserAuthForm({
           signIn("credentials", {
             email: email,
             password: password,
-            callbackUrl: process.env.NEXT_APP_URL! + "/dashboard",
+            callbackUrl: "/dashboard",
           });
         } else {
           setLoginError(data.message);
@@ -130,7 +130,7 @@ export function UserAuthForm({
           signIn("credentials", {
             email: email,
             password: password,
-            callbackUrl: process.env.NEXT_APP_URL! + "/dashboard",
+            callbackUrl: "/dashboard",
           });
         } else {
           setLoginError(data.message);
