@@ -25,7 +25,7 @@ const SignUpPage = () => {
     provider: string
   ) => {
     e.preventDefault();
-    signIn(provider, { callbackUrl: "http://localhost:3000/dashboard" });
+    signIn(provider, { callbackUrl: process.env.NEXT_APP_URL! + "/dashboard" });
   };
 
   return (
