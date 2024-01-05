@@ -76,7 +76,7 @@ The easiest way to deploy Next.js app is to use the **[Vercel Platform](https://
 Check out **[Next.js deployment docummentattion](https://nextjs.org/docs/pages/building-your-application/deploying)** for more details.
 # Security 🔐
 
-If you think you have found **a vulnerability (or are not sure)** in Docmind or any of the related packages (i.e. Adapters). Please do **not open Pull Requests/Issues/Discussions** before consulting with me. **Reach to me via email**, and then you can pull request.
+If you think you have found **a vulnerability (or are not sure)** in Docmind or any of the related packages (i.e. Adapters). Please do **not open Pull Requests/Issues/Discussions** before consulting with me. **Reach to me via email**: warzachowskip@gmail.com, and then you can pull request.
 
 # Documentation  📃
 Documentation is written in **GitBook**, it has whole **showcase of the application**. to check it out click **[here](https://docmind.gitbook.io/docmind/)**
