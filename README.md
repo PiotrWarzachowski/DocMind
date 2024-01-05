@@ -4,14 +4,6 @@
 
 Docmind is a **Next.js** application that allows you to **talk with your PDF**. It uses custom **vector database with OpenAI API** to perform search, it **works preety amazing** 😎, you can **see showcase** in documentation. Documentation is done using gitbook, you can find it **[here](https://docmind.gitbook.io/docmind/)**. Feel free to **star this project** ⭐. Contributors are welcome.
 
-
-
-# Small Showcase 🎞️
-**Whole showcase** can be seen in the **Documentation section** link below.
-
-![Image](https://i.imgur.com/wIvFNe0.png)
-![Image](https://i.imgur.com/2DBU1sb.png)
-
 # Tech stack 🧑‍💻
 The project uses top notch web technologies. 
 * **Next.js 14.0.1** with App router.
@@ -87,6 +79,12 @@ Documentation is written in **GitBook**, it has whole **showcase of the applicat
 # Contributing 🤝
 
 Docmind is open to all community contributions! If you'd like to contribute in any way, please first read the **[Contributing Guide](https://github.com/nextauthjs/.github/blob/main/CONTRIBUTING.md)**.
+
+# Small Showcase 🎞️
+**Whole showcase** can be seen in the **Documentation section** link below.
+
+![Image](https://i.imgur.com/wIvFNe0.png)
+![Image](https://i.imgur.com/2DBU1sb.png)
 
 
 # License 🪪
