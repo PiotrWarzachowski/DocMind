@@ -10,9 +10,7 @@ import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ToastAction } from "@/components/ui/toast";
 
-import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import Link from "next/link";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -24,7 +22,6 @@ export function UserAuthForm({
   pageName,
   ...props
 }: UserAuthFormProps) {
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,18 +31,6 @@ export function UserAuthForm({
   const params = useSearchParams();
   const errorParams = params.get("error");
 
-  useEffect(() => {
-    if (errorParams) {
-      toast({
-        variant: "destructive",
-        title: "Github login failed",
-        description:
-          "Your github e-mail is set to private. Please make it public or use another method.",
-        action: <ToastAction altText="Close">Close</ToastAction>,
-        duration: 100000,
-      });
-    }
-  }, [errorParams]);
   async function handleOAuthLogin(
     event: React.MouseEvent<HTMLButtonElement>,
     provider: string
