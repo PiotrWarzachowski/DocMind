@@ -82,11 +82,5 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user, account, profile }) {
-      if (account && account.provider === "github" && !user.email) {
-        return "/signin?error=NoEmail";
-      }
-      return true;
-    },
   },
 };

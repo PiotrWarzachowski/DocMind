@@ -14,7 +14,7 @@ const dashboardPage = async () => {
   console.log(user.email);
 
   if (!user.email) {
-    redirect("/auth-callback?origin=dashboard");
+    redirect("/signin?error=NoEmail");
   }
   const dbUser = await db.user.findFirst({
     where: {

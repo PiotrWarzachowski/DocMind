@@ -11,6 +11,7 @@ import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ToastAction } from "@/components/ui/toast";
+
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import Link from "next/link";
@@ -31,40 +32,34 @@ export function UserAuthForm({
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
   const params = useSearchParams();
+  const errorParams = params.get("error");
 
-  async function handleOAuthLogin(
-    event: React.MouseEvent<HTMLButtonElement>,
-    provider: string
-  ) {
-    event.preventDefault();
-
-    setIsLoading(true);
-
-    const resp = await signIn(provider, {
-      callbackUrl: "http://localhost:3000/dashboard",
-    });
-    console.log(resp);
-    if (params.get("error")) {
+  useEffect(() => {
+    if (errorParams) {
       toast({
         variant: "destructive",
         title: "Github login failed",
         description:
           "Your github e-mail is set to private. Please make it public or use another method.",
         action: <ToastAction altText="Close">Close</ToastAction>,
-        duration: 10000000,
+        duration: 100000,
       });
     }
+  }, [errorParams]);
+  async function handleOAuthLogin(
+    event: React.MouseEvent<HTMLButtonElement>,
+    provider: string
+  ) {
+    event.preventDefault();
+    if (provider === "github" && errorParams === "NoEmail") {
+      return;
+    }
+    setIsLoading(true);
+    signIn(provider, { callbackUrl: "http://localhost:3000/dashboard" });
     setIsLoading(false);
   }
 
   async function handleSignUp() {
-    toast({
-      variant: "destructive",
-      title: "Github login failed",
-      description:
-        "Your github e-mail is set to private. Please try again. Make it public or use another method.",
-      action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
-    });
     let isValid = true;
     const emailSchema = z.string().email();
     const passwordSchema = z.string().min(8);
@@ -234,6 +229,12 @@ export function UserAuthForm({
               Sign In Instead
             </Link>
           </>
+        )}
+        {errorParams && (
+          <p className="text-sm text-red-500 flex align-center">
+            Your github e-mail is set to private. Please make it public or use
+            another sign-in/sign-up method.
+          </p>
         )}
       </div>
 

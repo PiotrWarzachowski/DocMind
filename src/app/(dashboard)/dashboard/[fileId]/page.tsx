@@ -14,10 +14,14 @@ const Page = async ({ params }: PageProps) => {
   const { fileId } = params;
   const session = await getServerSession(authOptions);
   const user = session?.user;
+
   if (!session) {
     redirect("/signin");
   }
-  if (!user || !user.id || !user.email) {
+  if (!user.email) {
+    redirect("/signin?error=NoEmail");
+  }
+  if (!user || !user.id) {
     redirect(`/auth-callback?origin=dashboard/${fileId}`);
   }
 
