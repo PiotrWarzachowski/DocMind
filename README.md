@@ -80,11 +80,6 @@ Documentation is written in **GitBook**, it has whole **showcase of the applicat
 
 Docmind is open to all community contributions! If you'd like to contribute in any way, please first read the **[Contributing Guide](https://github.com/nextauthjs/.github/blob/main/CONTRIBUTING.md)**.
 
-# Small Showcase 🎞️
-**Whole showcase** can be seen in the **Documentation section** link below.
-
-![Image](https://i.imgur.com/wIvFNe0.png)
-![Image](https://i.imgur.com/2DBU1sb.png)
 
 
 # License 🪪
